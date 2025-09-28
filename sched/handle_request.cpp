@@ -61,6 +61,7 @@ using std::string;
 #include "sched_result.h"
 #include "sched_customize.h"
 #include "time_stats_log.h"
+#include "sched_sun.h"
 
 // are the 2 hosts obviously different computers?
 //
@@ -1366,6 +1367,39 @@ void process_request(char* code_sign_key) {
     g_reply->nucleus_only = false;
 
     log_request();
+
+    // if "sun only" mode is enabled, check if sun is shining
+    if (g_reply->user.sun_only) {
+        time_t now = time(0);
+        struct tm* ptm = gmtime(&now);
+        int year = ptm->tm_year + 1900;
+        int month = ptm->tm_mon + 1;
+        int day = ptm->tm_mday;
+        double sunrise, sunset;
+        sun_rise_set(year, month, day, g_reply->user.latitude, g_reply->user.longitude, sunrise, sunset);
+
+        double current_hour = ptm->tm_hour + ptm->tm_min / 60.0 + ptm->tm_sec / 3600.0;
+
+        bool is_night = false;
+        if (sunrise < sunset) { // Normal case: sun rises and sets on the same day
+            if (current_hour < sunrise || current_hour > sunset) {
+                is_night = true;
+            }
+        } else { // Sun is up across midnight (polar regions)
+            if (current_hour > sunset && current_hour < sunrise) {
+                is_night = true;
+            }
+        }
+
+        if (is_night) {
+            ok_to_send_work = false;
+            log_messages.printf(MSG_NORMAL,
+                "[HOST#%lu] 'Sun only' mode is enabled and it is nighttime. Not sending work. Sunrise: %f, Sunset: %f, Current: %f\n",
+                g_reply->host.id, sunrise, sunset, current_hour
+            );
+            g_reply->insert_message("'Sun only' mode is enabled and it is nighttime at your location. No tasks will be sent.", "low");
+        }
+    }
 
 #if 0
     // if you need to debug a problem w/ a particular host or user,

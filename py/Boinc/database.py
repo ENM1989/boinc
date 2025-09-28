@@ -110,7 +110,10 @@ class User(DatabaseObject):
                     'cross_project_id',
                     'passwd_hash',
                     'email_validated',
-                    'donated'
+                    'donated',
+                    'latitude',
+                    'longitude',
+                    'sun_only'
                     ])
 
 class Team(DatabaseObject):

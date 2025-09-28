@@ -141,6 +141,7 @@ schedshare_SCRIPTS = start stop status transitioner_catchup.php
 noinst_HEADERS = \
     assimilate_handler.h \
     handle_request.h \
+    sched_sun.h \
     plan_class_spec.h \
     sched_main.h \
     sched_locality.h \
@@ -178,6 +179,7 @@ cgi_sources = \
     sched_score.cpp \
     sched_send.cpp \
     sched_timezone.cpp \
+    sched_sun.cpp \
 	../vda/sched_vda.cpp \
     sched_version.cpp \
     sched_types.cpp \

@@ -221,6 +221,9 @@ struct USER {
     double login_token_time;
     char previous_email_addr[256];
     double email_addr_change_time;
+    double latitude;
+    double longitude;
+    bool sun_only;
     void clear();
 };
 
