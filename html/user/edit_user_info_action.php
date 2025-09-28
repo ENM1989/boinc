@@ -63,8 +63,28 @@ if (POSTAL_CODE) {
     $postal_code = BoincDb::escape_string(sanitize_tags(post_str("postal_code", true)));
 }
 
+$latitude_str = post_str("latitude", true);
+if (strlen($latitude_str) && !is_numeric($latitude_str)) {
+    error_page("Latitude must be a number.");
+}
+$latitude = (float) $latitude_str;
+if ($latitude < -90 || $latitude > 90) {
+    error_page("Latitude must be between -90 and 90.");
+}
+
+$longitude_str = post_str("longitude", true);
+if (strlen($longitude_str) && !is_numeric($longitude_str)) {
+    error_page("Longitude must be a number.");
+}
+$longitude = (float) $longitude_str;
+if ($longitude < -180 || $longitude > 180) {
+    error_page("Longitude must be between -180 and 180.");
+}
+
+$sun_only = post_str("sun_only", true) ? 1 : 0;
+
 $result = $user->update(
-    "name='$name', url='$url', country='$country', postal_code='$postal_code'"
+    "name='$name', url='$url', country='$country', postal_code='$postal_code', latitude=$latitude, longitude=$longitude, sun_only=$sun_only"
 );
 if ($result) {
     Header("Location: ".HOME_PAGE);

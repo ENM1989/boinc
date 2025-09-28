@@ -59,6 +59,24 @@ if (POSTAL_CODE) {
     );
 }
 
+form_input_text(
+    tra("Latitude %1 For 'sun only' mode%2", "<br><p class=\"small\">", "</p>"),
+    'latitude',
+    $user->latitude
+);
+
+form_input_text(
+    tra("Longitude %1 For 'sun only' mode%2", "<br><p class=\"small\">", "</p>"),
+    'longitude',
+    $user->longitude
+);
+
+form_checkbox(
+    tra("Compute only when sun is shining %1 For 'sun only' mode%2", "<br><p class=\"small\">", "</p>"),
+    'sun_only',
+    $user->sun_only
+);
+
 form_submit('Update info');
 form_end();
 page_tail();

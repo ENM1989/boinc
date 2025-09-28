@@ -132,6 +132,9 @@ create table user (
     login_token_time        double          not null default 0,
     previous_email_addr     varchar(254)    not null default '',
     email_addr_change_time  double          not null default 0,
+    latitude                double          not null default 0,
+    longitude               double          not null default 0,
+    sun_only                tinyint         not null default 0,
     primary key (id)
 ) engine=InnoDB;
 

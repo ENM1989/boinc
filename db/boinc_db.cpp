@@ -377,7 +377,7 @@ void DB_USER::db_print(char* buf){
         "cross_project_id='%s', passwd_hash='%s', "
         "email_validated=%d, donated=%d, "
         "login_token='%s', login_token_time=%f, "
-	"previous_email_addr='%s', email_addr_change_time=%f",
+	"previous_email_addr='%s', email_addr_change_time=%f, latitude=%f, longitude=%f, sun_only=%d",
         create_time, email_addr, name,
         authenticator,
         country, postal_code,
@@ -390,7 +390,8 @@ void DB_USER::db_print(char* buf){
         cross_project_id, passwd_hash,
         email_validated, donated,
         login_token, login_token_time,
-	previous_email_addr, email_addr_change_time
+	previous_email_addr, email_addr_change_time,
+        latitude, longitude, sun_only
     );
     UNESCAPE(email_addr);
     UNESCAPE(name);
@@ -438,6 +439,9 @@ void DB_USER::db_parse(MYSQL_ROW &r) {
     login_token_time = atof(r[i++]);
     strcpy2(previous_email_addr, r[i++]);
     email_addr_change_time = atof(r[i++]);
+    latitude = atof(r[i++]);
+    longitude = atof(r[i++]);
+    sun_only = atoi(r[i++]);
 }
 
 void DB_USER_DELETED::db_print(char* buf){
